@@ -5,9 +5,9 @@
 
 
 # Dependencies:
-* pip / nc / curl
+* pip / nc / curl / git
 - $ sudo yum install -y epel-release
-- $ sudo yum install -y python2-pip nc curl
+- $ sudo yum install -y python2-pip nc curl git
 
 * awscli
 - $ sudo pip install awscli
@@ -51,18 +51,18 @@
 
 # Node Configuration:
 
-* Upload the tar file to your node and untar to directory of your choice, since we are not using git 
-- example /opt/
+* Checkout from get and move into the location of your choice, using clone then move to avoid run git command root.
+- git clone https://github.com/jassinpain/s3-task-queue.git
+- sudo mv s3-task-queue /opt/
 
 
 
 # copy the s3-task-queue.task.conf.example and update variables
 
-# lock down the files
-sudo chmod 600 $CONFIG_DIR/CONFIG_FILE
-sudo chmod 700 $CONFIG_DIR/bin/*
-sudo chown -R <USER_TO_RUN_AS> $CONFIG_DIR
+# lock down the files, example
+chmod 600 /opt/s3-task-queue/etc/*
+chmod 700 /opt/s3-task-queue/bin/*
 
-# Create Crontjob on all nodes
+# Create Crontjob on all nodes, user must have access to all file from git repo
 - crontab -e
-- 35 * * * * /opt/s3-task-queue.task/bin/s3-task-queue.sh
+- 35 * * * * /opt/s3-task-queue/bin/s3-task-queue.sh
