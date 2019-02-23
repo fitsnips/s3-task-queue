@@ -5,15 +5,15 @@
 
 
 # Dependencies:
-* pip / nc / curl / git
-- $ sudo yum install -y epel-release
-- $ sudo yum install -y python2-pip nc curl git
+1. pip / nc / curl / git
+   * $ sudo yum install -y epel-release
+   * $ sudo yum install -y python2-pip nc curl git
 
-* awscli
-- $ sudo pip install awscli
+2. awscli
+   * $ sudo pip install awscli
 
 
-* AWS IAM role attached to the nodes with the following policy attached, updated for your bucket name if you choose a s3 bucket other than mpartical-queue
+3. AWS IAM role attached to the nodes with the following policy attached, updated for your bucket name if you choose a s3 bucket other than s3-task-queue
 
 ```code
 {
@@ -46,24 +46,29 @@
 }
 ```
 
-* If DATADOG_METRICS_ENABLED="true"
-- datadog agent must be installed 
+4. If DATADOG_METRICS_ENABLED="true"
+   * datadog agent must be installed 
 
-# s3-task-queue Configuration:
+5. Slack notifications require a Slack inbound webhook be configured
+   * https://api.slack.com/incoming-webhooks
 
-* Checkout from get and move into the location of your choice, using clone then move to avoid run git command root.
-- git clone https://github.com/jassinpain/s3-task-queue.git
-- sudo mv s3-task-queue /opt/
+# s3-task-queue installon and configuration:
 
-# copy the s3-task-queue.task.conf.example and update variables
+1. Checkout from get and move into the location of your choice, using clone then move to avoid run git command root.
+   * git clone https://github.com/jassinpain/s3-task-queue.git
+   * sudo mv s3-task-queue /opt/
 
-# lock down the files
-chmod 600 /opt/s3-task-queue/etc/*
-chmod 700 /opt/s3-task-queue/bin/*
+2. Copy the s3-task-queue.task.conf.example and update variables:
+   * cp /opt/s3-task-queue/etc/s3-task-queue.conf.example /opt/s3-task-queue/etc/s3-task-queue.conf
+   * update /opt/s3-task-queue/etc/s3-task-queue.conf
 
-# Create Crontjob on all nodes, user must have access to all files from git repo
-- crontab -e
-- 35 * * * * /opt/s3-task-queue/bin/s3-task-queue.sh
+3. Lock down the files:
+   * chmod 600 /opt/s3-task-queue/etc/*
+   * chmod 700 /opt/s3-task-queue/bin/*
+
+4. Create Crontjob on all nodes, user must have access to all files from git repo:
+   * crontab -e
+     1. 35 * * * * /opt/s3-task-queue/bin/s3-task-queue.sh
 
 # Known Issues:
 * Server list management sucks, something like consul would allow discovery. Baring that we could make them register by dropping a file in the s3 bucket, then doing a list on the folder containing the node registery. Nodes would have to unregister on destroy on the file to s3 bucket method.
