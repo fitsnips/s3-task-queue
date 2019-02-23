@@ -30,7 +30,7 @@
             ],
             "Resource": [
                 "arn:aws:s3:::s3-task-queue",
-                "arn:aws:s3:::s3-s3-task-queue/*"
+                "arn:aws:s3:::s3-task-queue/*"
             ]
         },
         {

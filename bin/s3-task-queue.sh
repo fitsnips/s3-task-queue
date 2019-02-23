@@ -124,10 +124,28 @@ getNextNode() {
 }
 
 
-myTask() {
+getMessageLevel() {
+  _MESSAGE=$*
+  if [[ ${_MESSAGE} == *"FATAL"* ]]; then
+    return 5
+  elif [[ ${_MESSAGE} == *"ERROR"* ]]; then
+    return 4
+  elif [[ ${_MESSAGE} == *"NOTICE"* ]]; then
+    return 3
+  elif [[ ${_MESSAGE} == *"INFO"* ]]; then
+    return 2      
+  elif [[ ${_MESSAGE} == *"ALL"* ]]; then
+    return 1
+  else 
+    return 0
+  fi
+}
+
+
+eventLoop() {
   # log that this node is starting its task
   fetchS3NodeFile
-  ACTIVE_HOST=`cat $LOCK_DIR/$S3_NODE_FILE`
+  ACTIVE_HOST=`cat $LOCK_DIR/$S3_NODE_FILE` 
 
   if [ ! ${ACTIVE_HOST} ]; then
     if [ "${HOSTNAME}" = "${HOSTLIST[${NEXT_NODE_INDEX}]}" ]; then
@@ -149,27 +167,6 @@ myTask() {
   logStep "NOTICE: Completed $TASK_FILE run"
   getNextNode
 }
-
-getMessageLevel() {
-  _MESSAGE=$*
-  if [[ ${_MESSAGE} == *"FATAL"* ]]; then
-    return 5
-  elif [[ ${_MESSAGE} == *"ERROR"* ]]; then
-    return 4
-  elif [[ ${_MESSAGE} == *"NOTICE"* ]]; then
-    return 3
-  elif [[ ${_MESSAGE} == *"INFO"* ]]; then
-    return 2      
-  elif [[ ${_MESSAGE} == *"ALL"* ]]; then
-    return 1
-  else 
-    return 0
-  fi
-}
-
-# 1. 
-# cron task every hour on every node
-# 05 * * * * * /opt/jmiller/bin/mparicle_task.sh
 
 
 
@@ -195,7 +192,7 @@ createLock
 verifyS3Access 
 
 # run task
-myTask 
+eventLoop 
 
 # push up the next node in queue
 putS3NodeFile
