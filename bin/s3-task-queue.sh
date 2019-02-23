@@ -15,7 +15,7 @@ BASE_DIR=/opt/s3-task-queue
 CONFIG_DIR=$BASE_DIR/etc
 BIN_DIR=$BASE_DIR/bin
 LOCK_DIR=$BASE_DIR/lock
-CONFIG_FILE=$CONFIG_DIR/s3-task-queue_task.conf
+CONFIG_FILE=$CONFIG_DIR/s3-task-queue.conf
 
 
 # would like to put this in config file but creates a circular problem
