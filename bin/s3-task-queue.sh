@@ -74,7 +74,11 @@ logStep() {
 
 checkLock() {
   if [ -f "$LOCK_DIR/lockfile" ]; then
-    logStep "FATAL: $LOCK_DIR/lockfile already exist exiting"
+    ps -p `cat ${LOCK_DIR}/{lockfile}` || removeLock
+
+    if [ -f "$LOCK_DIR/lockfile" ]; then
+      logStep "FATAL: $LOCK_DIR/lockfile already exist exiting"
+    fi
   fi
 }
 
