@@ -1,0 +1,30 @@
+# s3-task-queue.conf
+
+# Your slack, webhook url
+# https://api.slack.com/incoming-webhooks
+# empty SLACK_WEBHOOK_URL will disable slack posting
+SLACK_WEBHOOK_URL=""
+SLACK_CHANNEL="general"
+SLACK_POSTER="operations-task"
+SLACK_ICON="penguin"
+
+# set to "false" if not using datadog
+DATADOG_METRICS_ENABLED="true"
+
+S3_BUCKET="s3-task-queue"
+S3_NODE_FILE="activehost"
+S3_LOCK_FILE=""
+
+# space sperated list of nodes in cluster 
+# HOSTLIST=(ip-300-300-300-300.us-west-2.compute.internal ip-300-300-300-301.us-west-2.compute.internal ip-300-300-300-301.us-west-2.compute.internal)
+HOSTLIST=()
+
+# to make this modular we can pull in the task from a sperate file
+TASK_FILE="/opt/s3-task-queue/bin/lastRootLogin.sh"
+
+# We will set the node to check its place in the queue every NODE_INTERVAL seconds
+# be carefull with being overly agressive due to API call limits
+NODE_INTERVAL="60"
+
+# LOG levels used [INFO,WARN,FATAL]
+SLACK_MESSAGE_LEVEL="FATAL"
