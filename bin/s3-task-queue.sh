@@ -54,12 +54,12 @@ logStep() {
   if [ "${DATADOG_METRICS_ENABLED}" != "false" ]; then
     # metric.name:value|type|@sample_rate|#tag1:value,tag2
     if [ "${MESSAGE}" = "NOTICE: Starting $TASK_FILE run" ]; then
-      echo -n "s3-task-queue.task.started:1|c"|nc -4u -w1 localhost 8125
+      echo -n "s3_task_queue.task.started:1|c"|nc -4u -w1 localhost 8125
     elif [ "${MESSAGE}" = "NOTICE: Completed $TASK_FILE run"  ]; then
-      echo -n "s3-task-queue.task.completed:1|c"|nc -4u -w1 localhost 8125
+      echo -n "s3_task_queue.task.completed:1|c"|nc -4u -w1 localhost 8125
     elif [[ "${MESSAGE}" == "INFO: Runtime Seconds -"*  ]]; then
        local SECONDS=`echo ${MESSAGE}| cut -f2 -d"-"| sed -e 's/^[[:space:]]*//'` 
-       echo -n "s3-task-queue.task.run_time:$SECONDS|h"|nc -4u -w1 localhost 8125
+       echo -n "s3_task_queue.task.run_time:$SECONDS|h"|nc -4u -w1 localhost 8125
     fi
   fi
 
