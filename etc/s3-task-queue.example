@@ -1,0 +1,26 @@
+# mparticle_task.conf
+
+# Your slack, webhook url
+# https://api.slack.com/incoming-webhooks
+WEBHOOK_URL="<WEB_HOOK>"
+
+# s3 bucket that your nodes have IAM role as defined in README.md
+S3_BUCKET="<S3_BUCKET"
+
+S3_NODE_FILE="activehost"
+
+# space sperated list of nodes in cluster, given a more defined env I would use a AWS tag and search 
+HOSTLIST=(<node1> <node2>)
+
+# to make this modular we can pull in the task from a sperate file, contains a defintion of what task to run
+TASK_FILE="lastRootLogin.sh"
+
+# We will set the node to check its place in the queue every NODE_INTERVAL seconds
+# be carefull with being overly agressive due to API call limits
+NODE_INTERVAL="15"
+
+# Ability to disable Datadog metrics if you decide to replace it with another system.
+DATADOG_METRICS_ENABLED="true"
+
+# LOG levels used [INFO,WARN,FATAL], to much chat is just noise 
+SLACK_MESSAGE_LEVEL="FATAL"
