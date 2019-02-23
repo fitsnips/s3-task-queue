@@ -2,8 +2,25 @@
 
 # The goal is automation of a maintenance task on a set of 10 Linux instances (nodes of a database cluster). The maintenance task must:
 # 1. run once an hour (overall)  
+- Handled by cron and the s3 bucket "queue" task
+
 # 2. run on no more than 1 of the 10 nodes at one time (no overlapping runs) 
+- Handled by s3 bucket "queue" 
+
 # 3. must not run more than one instance of the task on a node, at one time (if the task runs for more than one hour, it cannot start another on the same or other nodes) 
+- Handled by s3 bucket "queue" task and lockfile
+
 # 4. notify an external system (e.g. slack) about the run, what node it is running on, when that run started and finished 
+- Slack inbound webhook
+
 # 5. log its activity to local syslog - DONE
+- using looger and taging the messages
+
 # 6. send a metric to an external API (e.g. DataDog) 
+- sending three metrics to datadog at this time if DATADOG_METRICS_ENABLED="true"
+- counter: s3-task-queue.task.started
+-- Tracks number of starts, can be used to see if all nodes are running
+- counter: s3-task-queue.task.completed
+-- Tracks number of task competions, can be used to see if all nodes are finishing
+- histogram: tracks runtime of every run, this includes time in wait state for hosts turn
+

@@ -5,7 +5,7 @@
 WEBHOOK_URL="<WEB_HOOK>"
 
 # s3 bucket that your nodes have IAM role as defined in README.md
-S3_BUCKET="<S3_BUCKET"
+S3_BUCKET="<S3_BUCKET>"
 
 S3_NODE_FILE="activehost"
 

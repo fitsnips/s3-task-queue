@@ -47,22 +47,26 @@
 ```
 
 * If DATADOG_METRICS_ENABLED="true"
-- datadog agent should be installed 
+- datadog agent must be installed 
 
-# Node Configuration:
+# s3-task-queue Configuration:
 
 * Checkout from get and move into the location of your choice, using clone then move to avoid run git command root.
 - git clone https://github.com/jassinpain/s3-task-queue.git
 - sudo mv s3-task-queue /opt/
 
-
-
 # copy the s3-task-queue.task.conf.example and update variables
 
-# lock down the files, example
+# lock down the files
 chmod 600 /opt/s3-task-queue/etc/*
 chmod 700 /opt/s3-task-queue/bin/*
 
-# Create Crontjob on all nodes, user must have access to all file from git repo
+# Create Crontjob on all nodes, user must have access to all files from git repo
 - crontab -e
 - 35 * * * * /opt/s3-task-queue/bin/s3-task-queue.sh
+
+# Known Issues:
+* Server list management sucks, something like consul would allow discovery. Baring that we could make them register by dropping a file in the s3 bucket, then doing a list on the folder containing the node registery. Nodes would have to unregister on destroy on the file to s3 bucket method.
+* Stale lock files may become a issue, investigate expiring lock file is pid in lock file is not active
+
+
